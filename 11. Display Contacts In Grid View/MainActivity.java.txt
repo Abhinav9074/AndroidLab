@@ -1,0 +1,37 @@
+package dcs.nmsm.gridcontacts;
+import java.util.ArrayList;
+import java.util.List;
+import android.app.Activity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+public class MainActivity extends Activity
+{
+GridView gv;
+List<String> Names ;
+@Override
+ protected void onCreate(Bundle savedInstanceState)
+ {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ Names = new ArrayList<String>();
+ gv = (GridView)findViewById(R.id.gridview);
+ Cursor phones = 
+getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_U
+RI, null,null,null, null);
+ while (phones.moveToNext())
+ {
+ String 
+name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKind
+s.Phone.DISPLAY_NAME));
+ Names.add(name);
+//uncomment if u want to display the contact details
+ //String phoneNumber = 
+phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Pho
+ne.NUMBER));
+ }
+ phones.close();
+ gv.setAdapter(new ArrayAdapter<String>(this, R.layout.cell,Names));
+ }}
